@@ -12,7 +12,7 @@ interface GameState {
    incorrect_guesses_made: number;
    remaining_incorrect_guesses: number;
    word_length: number;
-   guessed_letters?: string;
+   guessed_letters: string;
 }
 
 interface GuessResponse {
