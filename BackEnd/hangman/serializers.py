@@ -15,7 +15,8 @@ class GameSerializer(serializers.ModelSerializer):
             'current_word_state',
             'incorrect_guesses_made',
             'remaining_incorrect_guesses',
-            'word_length'
+            'word_length',
+            'guessed_letters'
         ]
 
     def get_current_word_state(self, obj):

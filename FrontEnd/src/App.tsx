@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, useParams, useNavigate } from 'react-router-dom'
 import './App.css'
+import Display from './display'
 
 // Interfaces
 
@@ -11,6 +12,7 @@ interface GameState {
    incorrect_guesses_made: number;
    remaining_incorrect_guesses: number;
    word_length: number;
+   guessed_letters?: string;
 }
 
 interface GuessResponse {
@@ -82,8 +84,9 @@ function Game() {
         const data = await response.json()
         setGameState(data)
         setGameId(data.id)
-        if (data.current_word_state) {
-          const guessed = data.current_word_state.replace(/_/g, '').replace(/ /g, '')
+        console.log(data.current_word_state)
+        if (data.guessed_letters) {
+          const guessed = data.guessed_letters
           setUsedLetters(new Set(guessed.split('')))
         }
       }
@@ -134,57 +137,27 @@ function Game() {
     }
   }
 
+  const handleGuessChange = (newGuess: string) => {
+    setGuess(newGuess)
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     //Prevent form submission from reloading the page
     e.preventDefault()
     makeGuess(guess.toUpperCase())
 }
 
-  return (
-    <div className="app">
-      <h1>Hangman Game</h1>
-      
-      {/* Game Status */}
-      <div className="game-status">
-        <p><strong>Status:</strong> {gameState?.status || 'Loading...'}</p>
-        <p><strong>Wrong Guesses:</strong> {gameState?.incorrect_guesses_made} / {gameState ? gameState.incorrect_guesses_made + gameState.remaining_incorrect_guesses : 0}</p>
-        <p><strong>Used Letters:</strong> {Array.from(usedLetters).join(', ') || 'None'}</p>
-      </div>
-
-      {/* Word Display */}
-      <div className="word-display">
-        {gameState?.current_word_state.split('').map((char, index) => (
-          <span key={index} className="letter">
-            {char}
-          </span>
-        ))}
-      </div>
-
-      {/* Message */}
-      <div className="message">{message}</div>
-
-      {/* Guess Input */}
-      {gameState?.status === 'InProgress' && (
-        <form onSubmit={handleSubmit} className="guess-form">
-          <input
-            type="text"
-            value={guess}
-            onChange={(e) => setGuess(e.target.value)}
-            placeholder="Enter a letter"
-            disabled={loading}
-            className="guess-input"
-          />
-          <button type="submit" disabled={loading || !guess || usedLetters.has(guess.toUpperCase())}>
-            {loading ? '...' : 'Guess'}
-          </button>
-        </form>
-      )}
-
-      {/* New Game Button */}
-      <button onClick={startNewGame} disabled={loading} className="new-game-btn">
-        {loading ? 'Loading...' : 'New Game'}
-      </button>
-    </div>
+   return (
+    <Display
+      gameState={gameState}
+      guess={guess}
+      message={message}
+      loading={loading}
+      usedLetters={usedLetters}
+      onGuessChange={handleGuessChange}
+      onGuessSubmit={handleSubmit}
+      onNewGame={startNewGame}
+    />
   )
 }
 
