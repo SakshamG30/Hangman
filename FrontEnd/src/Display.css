@@ -160,12 +160,7 @@ body {
 .man div {
   position: absolute;
   background: #2c3e50;
-  opacity: 0;
   transition: opacity 0.3s ease;
-}
-
-.man div.show {
-  opacity: 1;
 }
 
 .head {
@@ -190,7 +185,7 @@ body {
 }
 
 .left-arm {
-  left: 6px;
+  left: 14px;
   transform: rotate(-45deg);
 }
 
@@ -202,11 +197,11 @@ body {
 .left-leg, .right-leg {
   width: 40px;
   height: 8px;
-  top: 100px;
+  top: 105px;
 }
 
 .left-leg {
-  left: 6px;
+  left: 14px;
   transform: rotate(-45deg);
 }
 

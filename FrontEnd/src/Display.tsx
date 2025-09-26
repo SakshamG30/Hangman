@@ -93,23 +93,25 @@ const Display: React.FC<DisplayProps> = ({
     return <div className="balloons-container">{balloons}</div>;
   };
 
-  const renderHangman = () => {
-    const incorrectGuesses = gameState?.incorrect_guesses_made || 0;
+const renderHangman = () => {
+  const shouldShowHangman = gameState?.remaining_incorrect_guesses === 0;
 
-    return (
-      <div className={`hangman-container ${manFalling ? 'falling' : ''}`}>
-        <div className="balloons-anchor"></div>
-        <div className="man">
-          <div className={`head ${incorrectGuesses >= 1 ? 'show' : ''}`}></div>
-          <div className={`body ${incorrectGuesses >= 2 ? 'show' : ''}`}></div>
-          <div className={`left-arm ${incorrectGuesses >= 3 ? 'show' : ''}`}></div>
-          <div className={`right-arm ${incorrectGuesses >= 4 ? 'show' : ''}`}></div>
-          <div className={`left-leg ${incorrectGuesses >= 5 ? 'show' : ''}`}></div>
-          <div className={`right-leg ${incorrectGuesses >= 6 ? 'show' : ''}`}></div>
-        </div>
+  if (!shouldShowHangman) return null;
+
+  return (
+    <div className={`hangman-container ${manFalling ? 'falling' : ''}`}>
+      <div className="balloons-anchor"></div>
+      <div className="man">
+        <div className="head"></div>
+        <div className="body"></div>
+        <div className="left-arm"></div>
+        <div className="right-arm"></div>
+        <div className="left-leg"></div>
+        <div className="right-leg"></div>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
   return (
     <div className="app">
